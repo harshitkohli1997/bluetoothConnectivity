@@ -4,15 +4,22 @@ const device = new bluetooth.DeviceINQ();
 
 device.listPairedDevices(console.log);
 
-// device
-// .on('finished',  console.log.bind(console, 'finished'))
-// .on('found', function found(address, name){
-//     if(name ==='')
-//     {
-//   console.log('Found: ' + address + ' with name ' + name + 'present');
-//     }
-    
-// }).scan();
+const bt = require('./seed');
+//testing loop
+for(var  i =0; i < 4; i++)
+{
+  console.log(bt[i].name)
+}
+
+device
+.on('finished',  console.log.bind(console, 'finished'))
+.on('found', function found(address, name){
+  for(var  i =0; i < 4; i++)
+  {
+    if(name === bt[i].name)
+    console.log(bt[i].name +'is present')
+  }
+}).scan();
 
 
 
@@ -23,33 +30,32 @@ device.listPairedDevices(console.log);
 
 
     
-  device
-  .on('finished', console.log.bind(console, 'finished'))
-  .on('found', function found(address, name){
+  // device
+  // .on('finished', console.log.bind(console, 'finished'))
+  // .on('found', function found(address, name){
   
-    console.log('Found: ' + address + ' with name ' + name);
+  //   console.log('Found: ' + address + ' with name ' + name);
   
-    // find serial port channel
-    device.findSerialPortChannel(address, function(channel){
-      console.log('Found RFCOMM channel for serial port on %s: ', name, channel);
+  //   // find serial port channel
+  //   device.findSerialPortChannel(address, function(channel){
+  //     console.log('Found RFCOMM channel for serial port on %s: ', name, channel);
   
-      // make bluetooth connect to remote device
-      bluetooth.connect(address, channel, function(err, connection){
-        if(err) return console.error(err);
+  //     // make bluetooth connect to remote device
+  //     bluetooth.connect(address, channel, function(err, connection){
+  //       if(err) return console.error(err);
   
-        connection.delimiter = Buffer.from('\n', 'utf8');
-        connection.on('data', (buffer) => {
-          console.log('received message:', buffer.toString());
-        });
+  //       connection.delimiter = Buffer.from('\n', 'utf8');
+  //       connection.on('data', (buffer) => {
+  //         console.log('received message:', buffer.toString());
+  //       });
   
-        connection.write(new Buffer('Hello!', 'utf-8'), () => {
-          console.log('wrote');
-        });
-      });
+  //       connection.write(new Buffer('Hello!', 'utf-8'), () => {
+  //         console.log('wrote');
+  //       });
+  //     });
   
-    });
+  //   });
   
-  })
-  
-  device.scan();
+  // })
+
     
